@@ -25,6 +25,7 @@ const client = new MongoClient(uri);
 const db = client.db("bazar-dor");
 
 export const auth = betterAuth({
+ 
   database: mongodbAdapter(db, {
     client,
   }),
