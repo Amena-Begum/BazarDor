@@ -123,6 +123,19 @@ export default function ProductDetailsClient({ slug }: Props) {
     { label: "গত মাসের দাম", value: product.lastMonth },
   ];
 
+  const marketPrices = product.markets ?? [];
+
+  const allMarketPrices = marketPrices.flatMap((market) => [
+    market.min,
+    market.max,
+  ]);
+
+  const averagePrice =
+    allMarketPrices.length > 0
+      ? allMarketPrices.reduce((total, price) => total + price, 0) /
+      allMarketPrices.length
+      : null;
+
   const changeColor =
     product.change.dir === "up"
       ? "text-red-600"
@@ -197,6 +210,29 @@ export default function ProductDetailsClient({ slug }: Props) {
                 </p>
               </div>
             ))}
+          </div>
+        </section>
+
+
+        <section className="mt-8">
+          <h2 className="text-2xl font-extrabold">
+            বাজারের গড় দাম
+          </h2>
+
+          <div className="mt-4 rounded-2xl bg-white p-6 shadow-sm">
+            <p className="text-sm text-gray-500">
+              সব বাজারের সর্বনিম্ন ও সর্বোচ্চ দামের গড়
+            </p>
+
+            <p className="mt-3 text-3xl font-extrabold text-green-800">
+              {averagePrice !== null
+                ? `৳${formatPrice(averagePrice)}`
+                : "তথ্য পাওয়া যায়নি"}
+            </p>
+
+            <p className="mt-1 text-sm text-gray-500">
+              প্রতি {product.unit}
+            </p>
           </div>
         </section>
 
