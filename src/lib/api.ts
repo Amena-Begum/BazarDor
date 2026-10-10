@@ -2,7 +2,7 @@
 import type { Product } from "../types/product";
 
 const BASE_URL =
-  "https://api.api-store.workers.dev/api/bazardor";
+  "https://openapi.programming-hero.com/api/bazardor";
 
 // Fetch all products
 export async function getProducts(): Promise<Product[]> {

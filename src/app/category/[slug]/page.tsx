@@ -11,7 +11,7 @@ async function getCategoryProducts(
   slug: string,
 ): Promise<Product[]> {
   const url = new URL(
-    "https://api.api-store.workers.dev/api/bazardor/products",
+    "https://openapi.programming-hero.com/api/bazardor/products",
   );
 
   url.searchParams.set("category", slug);

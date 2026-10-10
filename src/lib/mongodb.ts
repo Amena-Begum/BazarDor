@@ -8,10 +8,16 @@ if (!uri) {
 }
 
 const globalWithMongo = globalThis as typeof globalThis & {
+  _mongoClient?: MongoClient;
   _mongoClientPromise?: Promise<MongoClient>;
 };
 
-const client = new MongoClient(uri);
+export const client =
+  globalWithMongo._mongoClient ?? new MongoClient(uri);
+
+if (process.env.NODE_ENV !== "production") {
+  globalWithMongo._mongoClient = client;
+}
 
 const clientPromise =
   globalWithMongo._mongoClientPromise ?? client.connect();
