@@ -17,14 +17,15 @@ import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 const categories = [
-  { name: "সব পণ্য", slug: "" },
-  { name: "চাল", slug: "chal" },
-  { name: "ডাল", slug: "dal" },
-  { name: "তেল", slug: "tel" },
-  { name: "সবজি", slug: "sobji" },
-  { name: "মাছ", slug: "mach" },
-  { name: "মাংস", slug: "mangsho" },
-  { name: "ডিম", slug: "dim" },
+  { name: "সব পণ্য", slug: "", icon: "🛒" },
+  { name: "চাল", slug: "chal", icon: "🍚" },
+  { name: "ডাল", slug: "dal", icon: "🫘" },
+  { name: "তেল", slug: "tel", icon: "🫗" },
+  { name: "সবজি", slug: "sobji", icon: "🥦" },
+  { name: "মাছ", slug: "mach", icon: "🐟" },
+  { name: "মাংস", slug: "mangsho", icon: "🍗" },
+  { name: "ডিম", slug: "dim", icon: "🥚" },
+  { name: "মসলা", slug: "moshla", icon: "🌶️" },
 ];
 
 export default function Navbar() {
