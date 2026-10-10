@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -96,7 +95,6 @@ export default function Navbar() {
     if (user) {
       return (
         <div className={mobile ? "w-full" : "relative"}>
-          {/* User name and icon */}
           <button
             type="button"
             onClick={() => setProfileMenuOpen((prev) => !prev)}
@@ -114,6 +112,7 @@ export default function Navbar() {
               <span className="block text-xs text-gray-500">
                 স্বাগতম
               </span>
+
               <span className="block max-w-40 truncate text-sm font-bold text-green-900">
                 {user.name || user.email}
               </span>
@@ -127,7 +126,6 @@ export default function Navbar() {
             />
           </button>
 
-          {/* Profile dropdown */}
           {profileMenuOpen && (
             <div
               role="menu"
@@ -141,6 +139,7 @@ export default function Navbar() {
                 <p className="text-xs text-gray-500">
                   লগইন করা হয়েছে
                 </p>
+
                 <p className="truncate text-sm font-semibold text-gray-800">
                   {user.email}
                 </p>
@@ -168,6 +167,7 @@ export default function Navbar() {
                 ) : (
                   <LogOut size={18} />
                 )}
+
                 {loggingOut ? "Logout হচ্ছে..." : "Logout"}
               </button>
             </div>
@@ -206,7 +206,7 @@ export default function Navbar() {
   return (
     <header className="relative z-40 border-b border-[#e5eee7] bg-white">
       {/* Top row */}
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-3 sm:px-6">
         <Link
           href="/"
           onClick={closeMenus}
@@ -227,6 +227,7 @@ export default function Navbar() {
             <span className="block text-xl font-extrabold text-green-800">
               বাজার দর
             </span>
+
             <span className="block text-xs text-gray-500">
               {date}
             </span>
@@ -255,19 +256,20 @@ export default function Navbar() {
 
       {/* Desktop categories */}
       <nav className="hidden border-t border-[#f0f4f0] md:block">
-        <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 overflow-x-auto px-4 py-2">
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-1 overflow-x-auto px-3 py-2">
           {categories.map((category) => (
             <Link
-              key={category.slug}
+              key={category.slug || "all"}
               href={getCategoryHref(category.slug)}
               onClick={closeMenus}
-              className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold transition ${
+              className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition ${
                 isCategoryActive(category.slug)
                   ? "bg-green-100 text-green-800"
                   : "text-gray-600 hover:bg-green-50 hover:text-green-800"
               }`}
             >
-              {category.name}
+              <span aria-hidden="true">{category.icon}</span>
+              <span>{category.name}</span>
             </Link>
           ))}
         </div>
@@ -276,19 +278,22 @@ export default function Navbar() {
       {/* Mobile navigation */}
       {menuOpen && (
         <nav className="border-t border-[#e5eee7] bg-white p-4 md:hidden">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-1.5">
             {categories.map((category) => (
               <Link
-                key={category.slug}
+                key={category.slug || "all"}
                 href={getCategoryHref(category.slug)}
                 onClick={closeMenus}
-                className={`rounded-lg px-3 py-3 text-sm font-semibold ${
+                className={`rounded-lg px-3 py-2.5 text-sm font-semibold ${
                   isCategoryActive(category.slug)
                     ? "bg-green-100 text-green-800"
                     : "bg-gray-50 text-gray-700"
                 }`}
               >
-                {category.name}
+                <span className="flex items-center gap-2">
+                  <span aria-hidden="true">{category.icon}</span>
+                  <span>{category.name}</span>
+                </span>
               </Link>
             ))}
           </div>
