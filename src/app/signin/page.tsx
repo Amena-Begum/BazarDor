@@ -1,139 +1,200 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+// import { signIn } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 export default function SignInPage() {
-const [email, setEmail] = useState("");
-const [password, setPassword] = useState("");
-const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
-const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-e.preventDefault();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-toast("Sign In authentication will be connected next.", {
-  style: {
-    background: "#111827",
-    color: "#ffffff",
-    border: "1px solid #374151",
-  },
-});
-};
+  async function handleSubmit(
+    e: React.FormEvent<HTMLFormElement>
+  ) {
+    e.preventDefault();
 
-return ( <main className="flex min-h-screen items-center justify-center bg-[#0b1120] px-4 py-10 text-white"> <div className="w-full max-w-md rounded-3xl border border-white/10 bg-[#111827] p-6 text-white shadow-xl sm:p-10">
-{/* Logo and Heading */} 
-<div className="mb-8 text-center"> 
-      <h1 className="mb-2 text-3xl font-bold text-white">
-        Sign In
-      </h1>
+    if (loading) return;
 
-      <p className="text-sm text-white/70">
-        Welcome back! Please enter your details.
-      </p>
-    </div>
+    setLoading(true);
 
-    {/* Sign In Form */}
-    <form onSubmit={handleSubmit} className="space-y-5">
-      {/* Email */}
-      <div>
-        <label
-          htmlFor="email"
-          className="mb-2 block text-sm font-semibold text-white"
-        >
-          Email Address
-        </label>
+    try {
+      const { error } = await signIn.email({
+        email,
+        password,
+      });
 
-        <input
-          id="email"
-          type="email"
-          placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="input input-bordered w-full border-white/20 bg-[#0b1120] text-white placeholder:text-gray-400 focus:border-primary focus:outline-none"
-          autoComplete="email"
-          required
-        />
-      </div>
+      if (error) {
+        toast.error(
+          error.message || "সাইন ইন করা যায়নি। আবার চেষ্টা করো।"
+        );
+        return;
+      }
 
-      {/* Password */}
-      <div>
-        <div className="mb-2 flex items-center justify-between gap-3">
-          <label
-            htmlFor="password"
-            className="text-sm font-semibold text-white"
+      toast.success("সফলভাবে সাইন ইন হয়েছে!");
+
+      router.push("/");
+      router.refresh();
+    } catch {
+      toast.error("সমস্যা হয়েছে। আবার চেষ্টা করো।");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleForgotPassword() {
+    toast("পাসওয়ার্ড রিকভারি সুবিধা পরে যোগ করা হবে।", {
+      style: {
+        background: "#166534",
+        color: "#ffffff",
+        border: "1px solid #15803d",
+      },
+    });
+  }
+
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-[#f1f8f3] px-4 py-10">
+      <div className="card w-full max-w-md border border-green-100 bg-white shadow-lg">
+        <div className="card-body p-6 sm:p-8">
+          {/* Brand */}
+          <Link
+            href="/"
+            className="mx-auto inline-flex items-center gap-2 text-lg font-extrabold text-green-800 hover:text-green-700"
           >
-            Password
-          </label>
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-xl">
+              🛒
+            </span>
+            Bazar-Dor
+          </Link>
 
-          <button
-            type="button"
-            className="text-xs font-semibold text-white hover:text-primary hover:underline"
-            onClick={() =>
-              toast("Password recovery will be added later.", {
-                style: {
-                  background: "#111827",
-                  color: "#ffffff",
-                },
-              })
-            }
+          {/* Heading */}
+          <div className="mt-5 text-center">
+            <h1 className="text-3xl font-extrabold text-green-900">
+              স্বাগতম!
+            </h1>
+
+            <p className="mt-2 text-sm text-gray-500">
+              তোমার অ্যাকাউন্টে সাইন ইন করো
+            </p>
+          </div>
+
+          {/* Sign In Form */}
+          <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+            {/* Email */}
+            <div className="form-control w-full">
+              <label htmlFor="email" className="label">
+                <span className="label-text font-semibold text-gray-700">
+                  ইমেইল ঠিকানা
+                </span>
+              </label>
+
+              <input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="input input-bordered w-full border-green-200 bg-white text-gray-900 placeholder:text-gray-400 focus:border-green-600 focus:outline-none"
+                required
+              />
+            </div>
+
+            {/* Password */}
+            <div className="form-control w-full">
+              <div className="flex items-center justify-between gap-2">
+                <label htmlFor="password" className="label">
+                  <span className="label-text font-semibold text-gray-700">
+                    পাসওয়ার্ড
+                  </span>
+                </label>
+
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  className="text-xs font-semibold text-green-700 hover:underline cursor-pointer"
+                >
+                  পাসওয়ার্ড ভুলে গেছ?
+                </button>
+              </div>
+
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="তোমার পাসওয়ার্ড দাও"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="input input-bordered w-full border-green-200 bg-white pr-20 text-gray-900 placeholder:text-gray-400 focus:border-green-600 focus:outline-none"
+                  required
+                />
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowPassword((prev) => !prev)
+                  }
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-green-700 hover:text-green-900 cursor-pointer"
+                  aria-label={
+                    showPassword
+                      ? "পাসওয়ার্ড লুকাও"
+                      : "পাসওয়ার্ড দেখাও"
+                  }
+                >
+                  {showPassword ? "লুকাও" : "দেখাও"}
+                </button>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn w-full border-0 bg-green-700 text-white hover:bg-green-800 disabled:bg-green-400"
+            >
+              {loading ? (
+                <>
+                  <span className="loading loading-spinner loading-sm" />
+                  সাইন ইন হচ্ছে...
+                </>
+              ) : (
+                "সাইন ইন"
+              )}
+            </button>
+          </form>
+
+          {/* Sign Up Link */}
+          <p className="mt-5 text-center text-sm text-gray-600">
+            এখনো অ্যাকাউন্ট নেই?{" "}
+            <Link
+              href="/signup"
+              className="font-bold text-green-700 hover:text-green-900 hover:underline"
+            >
+              অ্যাকাউন্ট তৈরি করো
+            </Link>
+          </p>
+
+          {/* Back to Home */}
+          <Link
+            href="/"
+            className="mt-2 text-center text-sm text-gray-500 hover:text-green-700 hover:underline"
           >
-            Forgot password?
-          </button>
+            ← হোম পেজে ফিরে যাও
+          </Link>
+
+          {/* Footer Note */}
+          <p className="mt-5 border-t border-green-100 pt-4 text-center text-xs text-gray-400">
+            তোমার প্রতিদিনের বাজার, এখন আরও সহজ
+          </p>
         </div>
-
-        <div className="relative">
-          <input
-            id="password"
-            type={showPassword ? "text" : "password"}
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="input input-bordered w-full border-white/20 bg-[#0b1120] pr-20 text-white placeholder:text-gray-400 focus:border-primary focus:outline-none"
-            autoComplete="current-password"
-            required
-          />
-
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-white hover:text-primary"
-          >
-            {showPassword ? "Hide" : "Show"}
-          </button>
-        </div>
       </div>
-
-      {/* Sign In Button */}
-      <button
-        type="submit"
-        className="btn btn-primary w-full text-white"
-      >
-        Sign In
-      </button>
-    </form>
-
-    {/* Sign Up Link */}
-    <p className="mt-6 text-center text-sm text-white/70">
-      Don&apos;t have an account?{" "}
-      <Link
-        href="/signup"
-        className="font-bold text-white hover:text-primary hover:underline"
-      >
-        Sign Up
-      </Link>
-    </p>
-
-    {/* Back to Home */}
-    <Link
-      href="/"
-      className="mt-6 block text-center text-sm text-white/70 hover:text-white"
-    >
-      ← Back to Home
-    </Link>
-  </div>
-</main>
-
-);
+    </main>
+  );
 }

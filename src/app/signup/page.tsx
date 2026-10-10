@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -44,9 +43,10 @@ export default function SignUpPage() {
     return (
         <main className="flex min-h-screen items-center justify-center bg-[#f1f8f3] px-4 py-10">
             <div className="w-full max-w-md rounded-3xl border border-green-100 bg-white p-6 shadow-lg sm:p-8">
+
                 <Link
                     href="/"
-                    className="text-sm font-semibold text-green-700 hover:underline"
+                    className="cursor-pointer text-sm font-semibold text-green-700 hover:underline"
                 >
                     ← হোমে ফিরে যাও
                 </Link>
@@ -55,6 +55,7 @@ export default function SignUpPage() {
                     <h1 className="text-3xl font-extrabold text-green-900">
                         অ্যাকাউন্ট তৈরি করো
                     </h1>
+
                     <p className="mt-2 text-sm text-gray-500">
                         বাজার দর-এর সঙ্গে যুক্ত হও
                     </p>
@@ -62,9 +63,13 @@ export default function SignUpPage() {
 
                 <form onSubmit={handleSubmit} className="mt-8 space-y-4">
                     <div>
-                        <label htmlFor="name" className="mb-1 block text-sm font-semibold">
+                        <label
+                            htmlFor="name"
+                            className="mb-1 block text-sm font-semibold"
+                        >
                             তোমার নাম
                         </label>
+
                         <input
                             id="name"
                             type="text"
@@ -73,14 +78,18 @@ export default function SignUpPage() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="তোমার পুরো নাম"
-                            className="input input-bordered w-full text-white"
+                           className="input input-bordered w-full border-green-200 bg-white text-gray-900 placeholder:text-gray-400 focus:border-green-600 focus:outline-none"
                         />
                     </div>
 
                     <div>
-                        <label htmlFor="email" className="mb-1 block text-sm font-semibold">
+                        <label
+                            htmlFor="email"
+                            className="mb-1 block text-sm font-semibold"
+                        >
                             ইমেইল
                         </label>
+
                         <input
                             id="email"
                             type="email"
@@ -89,7 +98,7 @@ export default function SignUpPage() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="you@example.com"
-                            className="input input-bordered w-full text-white"
+                            className="input input-bordered w-full border-green-200 bg-white text-gray-900 placeholder:text-gray-400 focus:border-green-600 focus:outline-none"
                         />
                     </div>
 
@@ -100,6 +109,7 @@ export default function SignUpPage() {
                         >
                             পাসওয়ার্ড
                         </label>
+
                         <input
                             id="password"
                             type="password"
@@ -109,24 +119,27 @@ export default function SignUpPage() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="কমপক্ষে ৮ অক্ষর"
-                            className="input input-bordered w-full text-white"
+                            className="input input-bordered w-full border-green-200 bg-white text-gray-900 placeholder:text-gray-400 focus:border-green-600 focus:outline-none"
                         />
                     </div>
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="btn w-full border-0 bg-green-700 text-white hover:bg-green-800"
+                        className="btn w-full cursor-pointer border-0 bg-green-700 text-white hover:bg-green-800"
                     >
-                        {loading ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "সাইন আপ"}
+                        {loading
+                            ? "অ্যাকাউন্ট তৈরি হচ্ছে..."
+                            : "সাইন আপ"}
                     </button>
                 </form>
 
                 <p className="mt-6 text-center text-sm text-gray-600">
                     আগে থেকেই অ্যাকাউন্ট আছে?{" "}
+
                     <Link
                         href="/signin"
-                        className="font-bold text-green-700 hover:underline"
+                        className="cursor-pointer font-bold text-green-700 hover:underline"
                     >
                         সাইন ইন করো
                     </Link>
