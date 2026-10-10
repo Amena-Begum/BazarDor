@@ -74,7 +74,7 @@ export default function ProductDetailsClient({ slug }: Props) {
 
   if (notFound) {
     return (
-      <main className="flex min-h-[60vh] items-center justify-center px-4 py-12">
+      <main className="flex min-h-[50vh] items-center justify-center px-4 py-12">
         <div className="max-w-lg text-center">
           <p className="text-6xl">🔎</p>
           <h1 className="mt-5 text-3xl font-extrabold">

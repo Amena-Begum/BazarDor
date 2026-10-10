@@ -123,28 +123,6 @@ export default function ProfilePage() {
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-2 block text-sm font-medium text-gray-700"
-              >
-                Email Address
-              </label>
-
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={session.user.email}
-                readOnly
-                className="w-full cursor-not-allowed rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-gray-500"
-              />
-
-              <p className="mt-1 text-xs text-gray-500">
-                Email address এখানে পরিবর্তন করা যাবে না।
-              </p>
-            </div>
-
             <button
               type="submit"
               disabled={isSaving || name.trim() === session.user.name}

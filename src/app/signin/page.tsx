@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-// import { signIn } from "@/lib/auth-client";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
@@ -25,8 +24,8 @@ export default function SignInPage() {
     setLoading(true);
 
     try {
-      const { error } = await signIn.email({
-        email,
+      const { error } = await authClient.signIn.email({
+        email: email.trim(),
         password,
       });
 
@@ -39,23 +38,31 @@ export default function SignInPage() {
 
       toast.success("সফলভাবে সাইন ইন হয়েছে!");
 
-      router.push("/");
+      const searchParams = new URLSearchParams(window.location.search);
+      const callbackURL = searchParams.get("callbackURL");
+
+      const destination =
+        callbackURL &&
+          callbackURL.startsWith("/") &&
+          !callbackURL.startsWith("//")
+          ? callbackURL
+          : "/";
+
+      router.replace(destination);
       router.refresh();
-    } catch {
-      toast.error("সমস্যা হয়েছে। আবার চেষ্টা করো।");
+    } catch (error) {
+      console.error("Sign in error:", error);
+
+      toast.error(
+        "সার্ভারে সমস্যা হয়েছে। আবার চেষ্টা করো।"
+      );
     } finally {
       setLoading(false);
     }
   }
 
   function handleForgotPassword() {
-    toast("পাসওয়ার্ড রিকভারি সুবিধা পরে যোগ করা হবে।", {
-      style: {
-        background: "#166534",
-        color: "#ffffff",
-        border: "1px solid #15803d",
-      },
-    });
+    toast("পাসওয়ার্ড রিকভারি সুবিধা এখনো যোগ করা হয়নি।");
   }
 
   return (
@@ -85,7 +92,10 @@ export default function SignInPage() {
           </div>
 
           {/* Sign In Form */}
-          <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="mt-5 space-y-4"
+          >
             {/* Email */}
             <div className="form-control w-full">
               <label htmlFor="email" className="label">
@@ -118,7 +128,7 @@ export default function SignInPage() {
                 <button
                   type="button"
                   onClick={handleForgotPassword}
-                  className="text-xs font-semibold text-green-700 hover:underline cursor-pointer"
+                  className="cursor-pointer text-xs font-semibold text-green-700 hover:underline"
                 >
                   পাসওয়ার্ড ভুলে গেছ?
                 </button>
@@ -141,7 +151,7 @@ export default function SignInPage() {
                   onClick={() =>
                     setShowPassword((prev) => !prev)
                   }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-green-700 hover:text-green-900 cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-sm font-semibold text-green-700 hover:text-green-900"
                   aria-label={
                     showPassword
                       ? "পাসওয়ার্ড লুকাও"
@@ -189,7 +199,7 @@ export default function SignInPage() {
             ← হোম পেজে ফিরে যাও
           </Link>
 
-          {/* Footer Note */}
+          {/* Footer */}
           <p className="mt-5 border-t border-green-100 pt-4 text-center text-xs text-gray-400">
             তোমার প্রতিদিনের বাজার, এখন আরও সহজ
           </p>
