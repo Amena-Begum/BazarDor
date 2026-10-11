@@ -136,6 +136,32 @@ export default function ProductDetailsClient({ slug }: Props) {
       allMarketPrices.length
       : null;
 
+  const minimumPrice =
+    marketPrices.length > 0
+      ? Math.min(...marketPrices.map((market) => market.min))
+      : null;
+
+  const maximumPrice =
+    marketPrices.length > 0
+      ? Math.max(...marketPrices.map((market) => market.max))
+      : null;
+
+  const unitNames: Record<string, string> = {
+    kg: "কেজি",
+    liter: "লিটার",
+    litre: "লিটার",
+    dozen: "ডজন",
+    piece: "পিস",
+    pcs: "পিস",
+  };
+  const unit = unitNames[product.unit.toLowerCase()] ?? product.unit;
+
+  const priceSummary = [
+    { label: "সর্বনিম্ন দাম", note: "সবচেয়ে কম দামের বাজার", value: minimumPrice, color: "text-green-700" },
+    { label: "সর্বোচ্চ দাম", note: "সবচেয়ে বেশি দামের বাজার", value: maximumPrice, color: "text-red-500" },
+    { label: "গড় দাম", note: "সব বাজারের গড়", value: averagePrice, color: "text-green-800" },
+  ];
+
   const changeColor =
     product.change.dir === "up"
       ? "text-red-600"
@@ -174,10 +200,10 @@ export default function ProductDetailsClient({ slug }: Props) {
                 {product.nameBn}
               </h1>
               <p className="mt-3 text-gray-500">
-                একক: প্রতি {product.unit}
+                একক: প্রতি {unit}
               </p>
               <p className={`mt-3 font-bold ${changeColor}`}>
-                {changeText} · {formatPrice(product.change.pct)}%
+                {changeText} · {formatPrice(Math.abs(product.change.pct))}%
               </p>
             </div>
 
@@ -187,7 +213,7 @@ export default function ProductDetailsClient({ slug }: Props) {
                 ৳{formatPrice(product.today)}
               </p>
               <p className="mt-1 text-sm text-gray-500">
-                প্রতি {product.unit}
+                প্রতি {unit}
               </p>
             </div>
           </div>
@@ -206,7 +232,7 @@ export default function ProductDetailsClient({ slug }: Props) {
                   ৳{formatPrice(price.value)}
                 </p>
                 <p className="mt-1 text-sm text-gray-500">
-                  প্রতি {product.unit}
+                  প্রতি {unit}
                 </p>
               </div>
             ))}
@@ -216,23 +242,28 @@ export default function ProductDetailsClient({ slug }: Props) {
 
         <section className="mt-8">
           <h2 className="text-2xl font-extrabold">
-            বাজারের গড় দাম
+            দামের সারসংক্ষেপ
           </h2>
 
-          <div className="mt-4 rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500">
-              সব বাজারের সর্বনিম্ন ও সর্বোচ্চ দামের গড়
-            </p>
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {priceSummary.map((item) => (
+              <div
+                key={item.label}
+                className="rounded-2xl bg-white p-6 shadow-sm"
+              >
+                <p className="text-sm text-gray-500">{item.label}</p>
 
-            <p className="mt-3 text-3xl font-extrabold text-green-800">
-              {averagePrice !== null
-                ? `৳${formatPrice(averagePrice)}`
-                : "তথ্য পাওয়া যায়নি"}
-            </p>
+                <p className={`mt-3 text-3xl font-extrabold ${item.color}`}>
+                  {item.value !== null
+                    ? `৳${formatPrice(item.value)}`
+                    : "তথ্য পাওয়া যায়নি"}
+                </p>
 
-            <p className="mt-1 text-sm text-gray-500">
-              প্রতি {product.unit}
-            </p>
+                <p className="mt-1 text-sm text-gray-500">
+                  {item.note} · প্রতি {unit}
+                </p>
+              </div>
+            ))}
           </div>
         </section>
 
