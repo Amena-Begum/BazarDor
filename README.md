@@ -57,7 +57,7 @@ Make sure you have the following installed:
    npm install
    ```
 
-4. Create a `.env.local` file in the project root and add the environment variables required by your application.
+4. Create a `.env` file in the project root and add the environment variables required by your application.
 
    Example:
 
