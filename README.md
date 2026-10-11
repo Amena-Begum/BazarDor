@@ -76,7 +76,7 @@ Make sure you have the following installed:
    ```bash
    npm run dev
    ```
-
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## 📦 Build for Production
 
 Run the following command to verify that the project can be built for production:
