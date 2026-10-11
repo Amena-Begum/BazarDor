@@ -14,9 +14,11 @@ icon: string;
 products: Product[];
 color: string;
 }) {
-const [sortOrder, setSortOrder] = useState("high-low");
+const [sortOrder, setSortOrder] = useState("default");
 
 const sortedProducts = useMemo(() => {
+// "default" keeps the order from the home page (biggest change first)
+if (sortOrder === "default") return products;
 return [...products].sort((a, b) => {
 return sortOrder === "high-low"
 ? b.today - a.today
@@ -33,6 +35,7 @@ return (
       aria-label={`${title} পণ্যের দাম সাজান`}
       className="select select-bordered w-full border-[#dce9df] bg-white text-sm text-[#183d32] sm:w-48"
     >
+      <option value="default">ডিফল্ট</option>
       <option value="high-low">দাম: বড় থেকে ছোট</option>
       <option value="low-high">দাম: ছোট থেকে বড়</option>
     </select>
@@ -94,7 +97,7 @@ className="group flex min-w-0 items-center gap-3 rounded-2xl border border-[#e5f
       : product.change.dir === "down"
         ? "▼"
         : "—"}{" "}
-    {bn(product.change.pct)}%
+    {bn(Math.abs(product.change.pct))}%
   </span>
 </a>
 
