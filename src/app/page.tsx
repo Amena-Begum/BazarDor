@@ -59,7 +59,7 @@ function ProductCard({ product }: { product: Product }) {
           }`}
       >
         {rising ? "▲" : falling ? "▼" : "—"}{" "}
-        {bn(product.change.pct)}%
+        {bn(Math.abs(product.change.pct))}%
       </span>
     </Link>
 
@@ -80,9 +80,10 @@ export default async function Home() {
     .sort((a, b) => b.change.pct - a.change.pct)
     .slice(0, 6);
 
+  // pct is negative for falling prices, so ascending order puts the biggest drop first
   const fallers = products
     .filter((product) => product.change.dir === "down")
-    .sort((a, b) => b.change.pct - a.change.pct)
+    .sort((a, b) => a.change.pct - b.change.pct)
     .slice(0, 6);
 
   return (
@@ -116,7 +117,7 @@ export default async function Home() {
                 : product.change.dir === "down"
                   ? "▼"
                   : "—"}{" "}
-              {bn(product.change.pct)}%
+              {bn(Math.abs(product.change.pct))}%
             </span>
           </div>
         ))}
@@ -164,7 +165,7 @@ export default async function Home() {
                     : product.change.dir === "down"
                       ? "▼"
                       : "—"}{" "}
-                  {bn(product.change.pct)}%
+                  {bn(Math.abs(product.change.pct))}%
                 </span>
               </Link>
             ))}
