@@ -37,6 +37,7 @@ export default function Navbar() {
 
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
+  const profileImage = user?.image;
 
   const date = new Intl.DateTimeFormat("bn-BD", {
     day: "numeric",
@@ -103,9 +104,18 @@ export default function Navbar() {
             className={`flex items-center gap-2 rounded-xl px-3 py-2 text-left transition hover:bg-green-50 ${mobile ? "w-full border border-green-100" : ""
               }`}
           >
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-800">
-              <UserRound size={20} />
-            </span>
+           <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-green-100 text-green-800">
+  {profileImage ? (
+    <img
+      src={profileImage}
+      alt={user?.name || "Profile"}
+      className="size-full object-cover"
+      referrerPolicy="no-referrer"
+    />
+  ) : (
+    <UserRound size={20} />
+  )}
+</span>
 
             <span className="min-w-0 flex-1">
               <span className="block text-xs text-gray-500">
@@ -128,8 +138,8 @@ export default function Navbar() {
             <div
               role="menu"
               className={`z-50 rounded-xl border border-green-100 bg-white p-2 shadow-lg ${mobile
-                  ? "mt-2 w-full"
-                  : "absolute right-0 top-full mt-2 w-52"
+                ? "mt-2 w-full"
+                : "absolute right-0 top-full mt-2 w-52"
                 }`}
             >
               <div className="mb-2 border-b border-gray-100 px-3 py-2">
@@ -273,8 +283,8 @@ export default function Navbar() {
               href={getCategoryHref(category.slug)}
               onClick={closeMenus}
               className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition ${isCategoryActive(category.slug)
-                  ? "bg-green-100 text-green-800"
-                  : "text-gray-600 hover:bg-green-50 hover:text-green-800"
+                ? "bg-green-100 text-green-800"
+                : "text-gray-600 hover:bg-green-50 hover:text-green-800"
                 }`}
             >
               <span aria-hidden="true">{category.icon}</span>
@@ -294,8 +304,8 @@ export default function Navbar() {
                 href={getCategoryHref(category.slug)}
                 onClick={closeMenus}
                 className={`rounded-lg px-3 py-2.5 text-sm font-semibold ${isCategoryActive(category.slug)
-                    ? "bg-green-100 text-green-800"
-                    : "bg-gray-50 text-gray-700"
+                  ? "bg-green-100 text-green-800"
+                  : "bg-gray-50 text-gray-700"
                   }`}
               >
                 <span className="flex items-center gap-2">
