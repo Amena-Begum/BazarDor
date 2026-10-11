@@ -77,11 +77,12 @@ export default function SignInPage() {
   //   });
   // };
 
+
   const handleGoogleSignIn = async () => {
     try {
       const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: "/?login=success&provider=google",
       });
 
       if (error) {
@@ -97,7 +98,7 @@ export default function SignInPage() {
     try {
       const { error } = await authClient.signIn.social({
         provider: "github",
-        callbackURL: "/",
+        callbackURL: "/?login=success&provider=github",
       });
 
       if (error) {

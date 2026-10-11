@@ -101,17 +101,40 @@ export default function SignUpPage() {
             setLoading(false);
         }
     }
-    const handleGoogleSignIn = async () => {
-        const data = await authClient.signIn.social({
-            provider: "google",
-        });
-        console.log(data)
-    };
-    const handleGithubSignIn = async () => {
-        const data = await authClient.signIn.social({
-            provider: "github"
-        });
-    };
+const handleGoogleSignIn = async () => {
+  try {
+    const { error } = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: `${window.location.origin}/?login=success&provider=google`,
+      newUserCallbackURL: `${window.location.origin}/?signup=success&provider=google`,
+    });
+
+    if (error) {
+      toast.error(error.message || "Google দিয়ে অ্যাকাউন্ট তৈরি করা যায়নি।");
+    }
+  } catch (error) {
+    console.error("Google sign-up error:", error);
+    toast.error("Google দিয়ে সাইন আপ করা যায়নি। আবার চেষ্টা করো।");
+  }
+};
+
+const handleGithubSignIn = async () => {
+  try {
+    const { error } = await authClient.signIn.social({
+      provider: "github",
+      callbackURL: `${window.location.origin}/?login=success&provider=github`,
+      newUserCallbackURL: `${window.location.origin}/?signup=success&provider=github`,
+    });
+
+    if (error) {
+      toast.error(error.message || "GitHub দিয়ে অ্যাকাউন্ট তৈরি করা যায়নি।");
+    }
+  } catch (error) {
+    console.error("GitHub sign-up error:", error);
+    toast.error("GitHub দিয়ে সাইন আপ করা যায়নি। আবার চেষ্টা করো।");
+  }
+};
+
 
     return (
         <main className="flex min-h-screen items-center justify-center bg-[#f1f8f3] px-4 py-10">
