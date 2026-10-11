@@ -87,7 +87,7 @@ export default function ProductDetailsClient({ slug }: Props) {
             href="/"
             className="mt-6 inline-flex rounded-xl bg-green-700 px-6 py-3 font-bold text-white"
           >
-            হোম পেজে ফিরে যাও
+            হোম পেজে ফিরে যান
           </Link>
         </div>
       </main>
