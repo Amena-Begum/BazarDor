@@ -65,17 +65,50 @@ export default function SignInPage() {
   //   toast("পাসওয়ার্ড রিকভারি সুবিধা এখনো যোগ করা হয়নি।");
   // }
 
+  // const handleGoogleSignIn = async () => {
+  //   const data = await authClient.signIn.social({
+  //     provider: "google",
+  //   });
+  //   console.log(data)
+  // };
+  // const handleGithubSignIn = async () => {
+  //   const data = await authClient.signIn.social({
+  //     provider: "github"
+  //   });
+  // };
+
   const handleGoogleSignIn = async () => {
-    const data = await authClient.signIn.social({
-      provider: "google",
-    });
-    console.log(data)
+    try {
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+
+      if (error) {
+        toast.error(error.message || "Google দিয়ে সাইন ইন করা যায়নি।");
+      }
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      toast.error("Google sign-in-এ সমস্যা হয়েছে। আবার চেষ্টা করো।");
+    }
   };
+
   const handleGithubSignIn = async () => {
-    const data = await authClient.signIn.social({
-      provider: "github"
-    });
+    try {
+      const { error } = await authClient.signIn.social({
+        provider: "github",
+        callbackURL: "/",
+      });
+
+      if (error) {
+        toast.error(error.message || "GitHub দিয়ে সাইন ইন করা যায়নি।");
+      }
+    } catch (error) {
+      console.error("GitHub sign-in error:", error);
+      toast.error("GitHub sign-in-এ সমস্যা হয়েছে। আবার চেষ্টা করো।");
+    }
   };
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#f1f8f3] px-4 py-10">
       <div className="card w-full max-w-md border border-green-100 bg-white shadow-lg">
