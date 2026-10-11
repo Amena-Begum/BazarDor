@@ -3,7 +3,6 @@ import Image from "next/image";
 import { getProducts } from "../lib/api";
 import type { Product } from "../types/product";
 import ProductSection from "../components/ProductSection";
-import AuthToast from "@/components/AuthToast";
 
 const bn = (value: number) =>
   new Intl.NumberFormat("bn-BD", {
@@ -88,96 +87,6 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-[#f1f8f3] text-[#183d32]">
-      {/* Scrolling price ticker */}
-      {/* <div className="overflow-hidden border-y border-[#e3eee6] bg-white py-3">
-      {products.length > 0 ? (<div className="price-ticker flex w-max items-center">
-        {[...products, ...products].map((product, index) => (
-          <div
-            key={`${product.id}-${index}`}
-            className="mx-4 flex items-center gap-2 whitespace-nowrap border-r border-gray-200 pr-5 text-sm"
-          > <span>{product.image || product.categoryIcon || "🛒"}</span>
-
-            <span className="font-bold">{product.nameBn}</span>
-
-            <span className="text-gray-600">
-              {bn(product.today)} টাকা/{product.unit}
-            </span>
-
-            <span
-              className={
-                product.change.dir === "up"
-                  ? "font-bold text-red-500"
-                  : product.change.dir === "down"
-                    ? "font-bold text-green-600"
-                    : "text-gray-500"
-              }
-            >
-              {product.change.dir === "up"
-                ? "▲"
-                : product.change.dir === "down"
-                  ? "▼"
-                  : "—"}{" "}
-              {bn(Math.abs(product.change.pct))}%
-            </span>
-          </div>
-        ))}
-      </div>
-      ) : (
-        <p className="px-5 text-sm text-gray-500">
-          বাজারদরের তথ্য লোড করা যাচ্ছে না।
-        </p>
-      )}
-    </div> */}
-      <AuthToast />
-      <div className="overflow-hidden border-y border-[#e3eee6] bg-white py-3">
-        {products.length > 0 ? (
-          <div className="price-ticker flex w-max items-center">
-            {[...products, ...products].map((product, index) => (
-              <Link
-                key={`${product.id}-${index}`}
-                href={`/product/${encodeURIComponent(product.slug)}`}
-                className="mx-4 flex items-center gap-2 whitespace-nowrap border-r border-gray-200 pr-5 text-sm transition-colors hover:bg-green-50"
-                aria-label={`${product.nameBn} পণ্যের বিস্তারিত দেখুন`}
-              >
-                <span>
-                  {product.image || product.categoryIcon || "🛒"}
-                </span>
-
-                <span className="font-bold text-green-900">
-                  {product.nameBn}
-                </span>
-
-                <span className="text-gray-600">
-                  {bn(product.today)} টাকা/{product.unit}
-                </span>
-
-                <span
-                  className={
-                    product.change.dir === "up"
-                      ? "font-bold text-red-500"
-                      : product.change.dir === "down"
-                        ? "font-bold text-green-600"
-                        : "text-gray-500"
-                  }
-                >
-                  {product.change.dir === "up"
-                    ? "▲"
-                    : product.change.dir === "down"
-                      ? "▼"
-                      : "—"}{" "}
-                  {bn(Math.abs(product.change.pct))}%
-                </span>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <p className="px-5 text-sm text-gray-500">
-            বাজারদরের তথ্য লোড করা যাচ্ছে না।
-          </p>
-        )}
-      </div>
-
-
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         {/* Hero banner */}
         <section className="flex flex-col items-center justify-between gap-6 overflow-hidden rounded-3xl bg-gradient-to-r from-[#e2f4e8] to-[#f7fbf7] px-6 py-8 sm:px-10 md:min-h-[270px] md:flex-row">
