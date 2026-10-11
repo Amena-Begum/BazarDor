@@ -1,7 +1,7 @@
-
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
@@ -11,51 +11,12 @@ export default function ProfilePage() {
 
   const { data: session, isPending } = authClient.useSession();
 
-  const [name, setName] = useState("");
-  const [isSaving, setIsSaving] = useState(false);
-
   useEffect(() => {
     if (!isPending && !session) {
-      router.replace("/signin");
-    }
-
-    if (session?.user?.name) {
-      setName(session.user.name);
+      toast.error("প্রোফাইল দেখতে আগে সাইন ইন করুন");
+      router.replace("/signin?callbackURL=/profile");
     }
   }, [session, isPending, router]);
-
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
-
-    if (!name.trim()) {
-      toast.error("আপনার নাম লিখুন");
-      return;
-    }
-
-    setIsSaving(true);
-
-    try {
-      const { error } = await authClient.updateUser({
-        name: name.trim(),
-      });
-
-      if (error) {
-        console.error("Profile update error:", error);
-        toast.error(error.message || "প্রোফাইল আপডেট করা যায়নি");
-        return;
-      }
-
-      toast.success("প্রোফাইল সফলভাবে আপডেট হয়েছে!");
-      await authClient.getSession();
-    } catch (error) {
-      console.error("Profile update error:", error);
-      toast.error("একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
-    } finally {
-      setIsSaving(false);
-    }
-  };
 
   if (isPending || !session) {
     return (
@@ -78,7 +39,7 @@ export default function ProfilePage() {
           </h1>
 
           <p className="mt-2 text-gray-600">
-            আপনার অ্যাকাউন্টের তথ্য দেখুন এবং আপডেট করুন।
+            আপনার অ্যাকাউন্টের তথ্য দেখুন।
           </p>
         </div>
 
@@ -101,36 +62,28 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <dl className="mb-8 grid gap-4 sm:grid-cols-2">
             <div>
-              <label
-                htmlFor="name"
-                className="mb-2 block text-sm font-medium text-gray-700"
-              >
-                Full Name
-              </label>
-
-              <input
-                id="name"
-                name="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="আপনার নাম লিখুন"
-                autoComplete="name"
-                required
-                className="w-full rounded-lg border border-green-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
-              />
+              <dt className="text-sm text-gray-500">Full Name</dt>
+              <dd className="font-semibold text-gray-900">
+                {session.user.name || "User"}
+              </dd>
             </div>
 
-            <button
-              type="submit"
-              disabled={isSaving || name.trim() === session.user.name}
-              className="w-full rounded-lg bg-green-700 px-5 py-3 font-semibold text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {isSaving ? "Saving..." : "Save Changes"}
-            </button>
-          </form>
+            <div>
+              <dt className="text-sm text-gray-500">Email</dt>
+              <dd className="break-all font-semibold text-gray-900">
+                {session.user.email}
+              </dd>
+            </div>
+          </dl>
+
+          <Link
+            href="/profile/update"
+            className="block w-full rounded-lg bg-green-700 px-5 py-3 text-center font-semibold text-white transition hover:bg-green-800"
+          >
+            Update Information
+          </Link>
         </section>
       </div>
     </main>
