@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
@@ -13,6 +13,24 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Page the user was trying to open before being sent here (e.g. /product/begun)
+  function getCallbackURL() {
+    const callbackURL = new URLSearchParams(window.location.search).get("callbackURL");
+
+    return callbackURL &&
+      callbackURL.startsWith("/") &&
+      !callbackURL.startsWith("//")
+      ? callbackURL
+      : "/";
+  }
+
+  useEffect(() => {
+    // Came here from a protected page
+    if (new URLSearchParams(window.location.search).get("callbackURL")) {
+      toast.error("এই পেজটি দেখতে আগে সাইন ইন করুন", { id: "protected-route" });
+    }
+  }, []);
 
   async function handleSubmit(
     e: React.FormEvent<HTMLFormElement>
@@ -82,7 +100,8 @@ export default function SignInPage() {
     try {
       const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/?login=success&provider=google",
+        callbackURL: `${getCallbackURL()}?login=success&provider=google`,
+        newUserCallbackURL: `${getCallbackURL()}?signup=success&provider=google`,
       });
 
       if (error) {
@@ -98,7 +117,8 @@ export default function SignInPage() {
     try {
       const { error } = await authClient.signIn.social({
         provider: "github",
-        callbackURL: "/?login=success&provider=github",
+        callbackURL: `${getCallbackURL()}?login=success&provider=github`,
+        newUserCallbackURL: `${getCallbackURL()}?signup=success&provider=github`,
       });
 
       if (error) {
