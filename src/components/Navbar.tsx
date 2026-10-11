@@ -100,9 +100,8 @@ export default function Navbar() {
             onClick={() => setProfileMenuOpen((prev) => !prev)}
             aria-expanded={profileMenuOpen}
             aria-haspopup="menu"
-            className={`flex items-center gap-2 rounded-xl px-3 py-2 text-left transition hover:bg-green-50 ${
-              mobile ? "w-full border border-green-100" : ""
-            }`}
+            className={`flex items-center gap-2 rounded-xl px-3 py-2 text-left transition hover:bg-green-50 ${mobile ? "w-full border border-green-100" : ""
+              }`}
           >
             <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-800">
               <UserRound size={20} />
@@ -120,20 +119,18 @@ export default function Navbar() {
 
             <ChevronDown
               size={17}
-              className={`shrink-0 text-green-800 transition-transform ${
-                profileMenuOpen ? "rotate-180" : ""
-              }`}
+              className={`shrink-0 text-green-800 transition-transform ${profileMenuOpen ? "rotate-180" : ""
+                }`}
             />
           </button>
 
           {profileMenuOpen && (
             <div
               role="menu"
-              className={`z-50 rounded-xl border border-green-100 bg-white p-2 shadow-lg ${
-                mobile
+              className={`z-50 rounded-xl border border-green-100 bg-white p-2 shadow-lg ${mobile
                   ? "mt-2 w-full"
                   : "absolute right-0 top-full mt-2 w-52"
-              }`}
+                }`}
             >
               <div className="mb-2 border-b border-gray-100 px-3 py-2">
                 <p className="text-xs text-gray-500">
@@ -246,12 +243,25 @@ export default function Navbar() {
             setMenuOpen((prev) => !prev);
             setProfileMenuOpen(false);
           }}
-          className="btn btn-ghost btn-square sm:hidden"
           aria-label={menuOpen ? "মেনু বন্ধ করুন" : "মেনু খুলুন"}
           aria-expanded={menuOpen}
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center
+    rounded-lg border border-[#dcebe0]
+    bg-white text-green-800 shadow-sm
+    transition-colors duration-200
+    hover:bg-green-50 hover:text-green-900
+    focus-visible:outline-none
+    focus-visible:ring-2 focus-visible:ring-green-600
+    focus-visible:ring-offset-2
+    md:hidden cursor-pointer"
         >
-          {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          {menuOpen ? (
+            <X size={24} strokeWidth={2.5} className="text-green-800" />
+          ) : (
+            <Menu size={24} strokeWidth={2.5} className="text-green-800" />
+          )}
         </button>
+
       </div>
 
       {/* Desktop categories */}
@@ -262,11 +272,10 @@ export default function Navbar() {
               key={category.slug || "all"}
               href={getCategoryHref(category.slug)}
               onClick={closeMenus}
-              className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition ${
-                isCategoryActive(category.slug)
+              className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition ${isCategoryActive(category.slug)
                   ? "bg-green-100 text-green-800"
                   : "text-gray-600 hover:bg-green-50 hover:text-green-800"
-              }`}
+                }`}
             >
               <span aria-hidden="true">{category.icon}</span>
               <span>{category.name}</span>
@@ -284,11 +293,10 @@ export default function Navbar() {
                 key={category.slug || "all"}
                 href={getCategoryHref(category.slug)}
                 onClick={closeMenus}
-                className={`rounded-lg px-3 py-2.5 text-sm font-semibold ${
-                  isCategoryActive(category.slug)
+                className={`rounded-lg px-3 py-2.5 text-sm font-semibold ${isCategoryActive(category.slug)
                     ? "bg-green-100 text-green-800"
                     : "bg-gray-50 text-gray-700"
-                }`}
+                  }`}
               >
                 <span className="flex items-center gap-2">
                   <span aria-hidden="true">{category.icon}</span>
