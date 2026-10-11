@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { authClient } from "../../lib/auth-client";
 import toast from "react-hot-toast";
 
@@ -65,8 +65,6 @@ export default function SignUpPage() {
                 password: String(user.password),
                 callbackURL: "/",
             });
-            console.log(data)
-            console.log(error)
             // if (error) {
             //     toast.error(error.message || "অ্যাকাউন্ট তৈরি করা যায়নি");
             //     console.error("Sign up error:", error);
@@ -74,10 +72,12 @@ export default function SignUpPage() {
             // }
 
             if (data) {
-                toast.success("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!");
-                router.push("/");
+                // Better Auth signs the new user in automatically,
+                // but the assignment wants them to log in from the sign in page
+                await authClient.signOut();
+                toast.success("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! এবার সাইন ইন করুন।");
+                router.push("/signin");
                 router.refresh();
-                redirect("/")
             }
             if (error) {
                 // console.error("Full sign-up result:", result);
