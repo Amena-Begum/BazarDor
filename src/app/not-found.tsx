@@ -24,7 +24,7 @@ export default function ProductNotFound() {
           href="/"
           className="mt-7 inline-flex rounded-xl bg-[#176b45] px-6 py-3 font-bold text-white hover:bg-[#105535]"
         >
-          হোম পেজে ফিরে যাও
+          হোম পেজে ফিরে যান
         </Link>
       </div>
     </main>
